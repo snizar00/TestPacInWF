@@ -1,0 +1,38 @@
+name: create-dev-environment
+
+on: 
+  workflow_dispatch:
+    inputs:
+      env_name:
+        description: name for the environment to be created
+        required: true
+      team_id:
+        description: security group id
+        required: true
+
+env:
+  CLIENT_ID: ${{secrets.CLIENT_ID}}
+  CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+  TENANT_ID: ${{secrets.TENANT_ID}}
+
+jobs:
+  create-dev-environment:
+    runs-on: windows-latest
+    steps:
+      - name: Install PAC CLI
+        uses: microsoft/powerplatform-actions/actions-install@v1
+
+      - name: Setup Authentication    
+        run: |
+          pac auth create --name "Actions" --applicationId "$env:CLIENT_ID" --clientSecret "$env:CLIENT_SECRET" --tenant "$env:TENANT_ID"
+
+      - name: Who Am I
+        run: |
+          pac org who
+
+      - name: Create Developer Environment
+        run: |
+          pac admin create `
+            --name ${{ github.event.inputs.env_name}} `
+            --type "Developer" `
+            --team-id ${{ github.event.inputs.team_id}}

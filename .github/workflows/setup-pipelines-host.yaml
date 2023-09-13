@@ -1,0 +1,55 @@
+name: setup-pipelines-host
+
+on: 
+  workflow_dispatch:
+    inputs:
+      env_security_group_id:
+        description: security group id
+        required: true
+      pipeline_admins_group_id:
+        description: pipelines admins group id
+        required: true
+      pipeline_users_group_id:
+        description: pipelines users group id
+        required: true
+
+env:
+  CLIENT_ID: ${{secrets.CLIENT_ID}}
+  CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+  TENANT_ID: ${{secrets.TENANT_ID}}
+
+jobs:
+  setup-pipelines-host:
+    runs-on: windows-latest
+    steps:
+      - name: Install PAC CLI
+        uses: microsoft/powerplatform-actions/actions-install@v1
+
+      - name: Setup Authentication     
+        run: |
+          pac auth create --name "Actions" --applicationId "$env:CLIENT_ID" --clientSecret "$env:CLIENT_SECRET" --tenant "$env:TENANT_ID"
+
+      - name: Who Am I
+        run: |
+          pac org who
+      
+      - name: Create production environment
+        run: |
+          $newEnv = (pac admin create --name "Power Platform Pipelines Host" --type "Production" --team-id ${{ github.event.inputs.env_security_group_id}} --json)
+          $environmentId = $newEnv.Id
+
+      - name: Switch to new environment
+        run: |
+          pac org select --environment $environmentId
+      
+      - name: Install pipelines application
+        run: |
+          pac application install --application-name "Power Platform Pipelines"
+
+      - name: Create Dataverse Team for Deployment Pipeline Administrators
+        run: |
+          pac admin assign-group --environment $nenvironmentId --group-name "Pipelines Administrators" --group ${{ github.event.inputs.pipeline_admins_group_id }} --membership-type Members --role "Deployment Pipeline Administrators" --team-type AadSecurityGroup
+      
+      - name: Create Dataverse Team for Deployment Pipeline Users
+        run: |
+          pac admin assign-group --environment $nenvironmentId --group-name "Pipelines Users" --group ${{ github.event.inputs.pipeline_users_group_id }} --membership-type Members --role "Deployment Pipeline Users" --team-type AadSecurityGroup

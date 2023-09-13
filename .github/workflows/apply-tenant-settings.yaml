@@ -1,0 +1,34 @@
+name: apply-tenant-settings
+
+on: workflow_dispatch
+
+jobs:
+  apply-tenant-settings:
+    runs-on: windows-latest
+    steps:
+      - name: Install PAC CLI
+        uses: microsoft/powerplatform-actions/actions-install@v1
+
+      - if: ${{ always() }}
+        id: get-pac-path
+        name: Add PAC to path
+        shell: pwsh
+        run: |
+          $actionsPath = "${{ runner.temp }}".Replace("_temp","_actions")
+          if ($env:RUNNER_OS -eq "Windows") {
+            $array = Get-ChildItem $actionsPath -Recurse | Where-Object{$_.FullName.EndsWith('pac\tools\pac.exe')}
+          }
+          else {
+            $array = Get-ChildItem $actionsPath -Recurse | Where-Object{$_.FullName.EndsWith('pac_linux/tools/pac')}
+          }
+          $pacPath = $array[0].Directory.FullName
+          "$pacPath" >> $env:GITHUB_PATH
+
+      - name: Setup Authentication    
+        run: |
+          pac auth create --name "Actions" -id ${{secrets.CLIENT_ID}} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID}}
+
+      - name: Who Am I
+        run: |
+          pac org who
+ 

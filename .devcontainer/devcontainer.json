@@ -1,0 +1,31 @@
+{
+  "name": "Power Platform",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "microsoft-IsvExpTools.powerplatform-vscode",
+        "ms-vscode.PowerShell",
+        "GitHub.vscode-github-actions"
+      ]
+    },
+    "openFiles": [
+      "README.md"
+    ]
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/azure-cli": {},
+    "ghcr.io/devcontainers/features/git": {},
+    "ghcr.io/devcontainers/features/powershell": {}
+  },
+  "secrets": {
+    "TENANT_ID": {
+      "description": "Add the tenant ID of your tenant."
+    },
+    "CLIENT_ID": {
+      "description": "Add the client ID of your service principal."
+    },
+    "CLIENT_SECRET": {
+      "description": "Add the client secret of your service principal."
+    }
+  }
+}
