@@ -28,9 +28,10 @@ jobs:
         # We need to add CLIENT_ID, CLIENT_SECRET, and TENANT_ID in secrets
       - name: Setup Authentication    
         run: |
-          $env:GITHUB_PATH\pac auth create --name "Actions" -id ${{secrets.CLIENT_ID}} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID}}
+          # $env:GITHUB_PATH\pac auth create --name "Actions" -id ${{secrets.CLIENT_ID}} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID}}
+          $env:GITHUB_PATH auth create --name "Actions" -id ${{secrets.CLIENT_ID}} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID}}
 
       - name: Who Am I
         run: |
-          $env:GITHUB_PATH\pac org who
+          $env:GITHUB_PATH org who
  
