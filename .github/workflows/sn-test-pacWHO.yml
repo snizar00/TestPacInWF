@@ -30,12 +30,14 @@ jobs:
           "$pacPath" >> $env:GITHUB_PATH
 
         # We need to add CLIENT_ID, CLIENT_SECRET, and TENANT_ID in secrets
-      - name: Setup Authentication    
+      - name: Setup Authentication
+        working-directory: $env:GITHUB_PATH
         run: |
           $env:GITHUB_PATH\pac.exe auth create --name "Actions" -id ${{secrets.CLIENT_ID}} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID}}
           # $env:GITHUB_PATH auth create --name "Actions" -id ${{secrets.CLIENT_ID}} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID}}
 
       - name: Who Am I
+        working-directory: $env:GITHUB_PATH      
         run: |
           $env:GITHUB_PATH\pac.exe org who
           # $env:GITHUB_PATH org who
