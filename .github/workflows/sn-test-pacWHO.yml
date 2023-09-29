@@ -21,7 +21,8 @@ jobs:
           else {
             $array = Get-ChildItem $actionsPath -Recurse | Where-Object{$_.FullName.EndsWith('pac_linux/tools/pac')}
           }
-          $pacPath = $array[0].Directory.FullName
+          $pacPath = $env:POWERPLATFORMTOOLS_PACPATH
+          # $pacPath = $array[0].Directory.FullName
           "$pacPath" >> $env:GITHUB_PATH
 
         # We need to add CLIENT_ID, CLIENT_SECRET, and TENANT_ID in secrets
