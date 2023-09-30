@@ -27,18 +27,19 @@ jobs:
           }
           # $pacPath = $env:POWERPLATFORMTOOLS_PACPATH
           # $pacPath = $array[0].Directory.FullName
-          Write-Output "GitHub BEFORE path is $env:GITHUB_PATH"
           ";$pacPath" >> $env:GITHUB_PATH
-          Write-Output "GitHub AFTER path is $env:GITHUB_PATH"
 
         # We need to add CLIENT_ID, CLIENT_SECRET, and TENANT_ID in secrets
       - name: Setup Authentication
         # working-directory: $env:GITHUB_PATH
         run: |
-          $env:GITHUB_PATH\pac.exe auth create --name "Actions" -id ${{secrets.CLIENT_ID}} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID}}
+          cd $pacPath
+          $pacPath\pac.exe auth create --name "Actions" -id ${{secrets.CLIENT_ID}} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID}}
 
       - name: Who Am I
         # working-directory: $env:GITHUB_PATH      
         run: |
-          $env:GITHUB_PATH\pac.exe org who
+          cd $pacPath
+          $pacPath\pac.exe org who
+          # $env:GITHUB_PATH\pac.exe org who
  
