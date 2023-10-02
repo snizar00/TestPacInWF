@@ -32,7 +32,6 @@ jobs:
         # We need to add CLIENT_ID, CLIENT_SECRET, and TENANT_ID in secrets
       - name: Setup Authentication
         run: |
-          Write-Host "Runner OS $env:RUNNER_OS"
           $env:POWERPLATFORMTOOLS_PACPATH auth create --name "Actions" -id ${{secrets.CLIENT_ID}} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID}} --url "https://orgfddc44ac.crm.dynamics.com"          
 
       - name: Who Am I
@@ -40,4 +39,4 @@ jobs:
           cd $pacPath
           $env:GITHUB_PATH org who
           #  & $env:POWERPLATFORMTOOLS_PACPATH org who          
- 
+          # Write-Host "Runner OS $env:RUNNER_OS" 
