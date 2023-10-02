@@ -32,19 +32,19 @@ jobs:
       - name: Setup Authentication
         run: |
           # if ($env:RUNNER_OS -eq "Windows") {
-            & $env:POWERPLATFORMTOOLS_PACPATH auth create --name "Actions" -id ${{secrets.CLIENT_ID}} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID}} --url "https://orgfddc44ac.crm.dynamics.com"
+          #  & $env:POWERPLATFORMTOOLS_PACPATH auth create --name "Actions" -id ${{secrets.CLIENT_ID}} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID}} --url "https://orgfddc44ac.crm.dynamics.com"
           #}
           #else {
-          #  $env:POWERPLATFORMTOOLS_PACPATH auth create --name "Actions" -id ${{secrets.CLIENT_ID}} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID}} --url "https://orgfddc44ac.crm.dynamics.com"          
+            $env:POWERPLATFORMTOOLS_PACPATH auth create --name "Actions" -id ${{secrets.CLIENT_ID}} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID}} --url "https://orgfddc44ac.crm.dynamics.com"          
           #}
 
       - name: Who Am I
         run: |
           cd $pacPath
           #if ($env:RUNNER_OS -eq "Windows") {
-            & $env:POWERPLATFORMTOOLS_PACPATH org who
+          #  & $env:POWERPLATFORMTOOLS_PACPATH org who
           #}
           #else {
-          #  $env:GITHUB_PATH org who
+            $env:GITHUB_PATH org who
           #}
  
