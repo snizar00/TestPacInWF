@@ -41,5 +41,5 @@ jobs:
         run: |
           cd $pacPath
           # $pacPath\pac.exe org who
-          & $env:POWERPLATFORMTOOLS_PACPATH org who
+          & $env:POWERPLATFORMTOOLS_PACPATH org list
  
