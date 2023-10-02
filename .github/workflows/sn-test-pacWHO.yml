@@ -23,7 +23,7 @@ jobs:
             Write-Host "Directory Path: $pacPath"
           }
           else {
-            $array = Get-ChildItem $actionsPath -Recurse | Where-Object{$_.FullName.EndsWith('pac_linux/tools/pac')}
+            $array = Get-ChildItem $actionsPath -Recurse | Where-Object{$_.FullName.EndsWith('/pac')}
           }
           $pacPath = $array[0].Directory.FullName
           ";$pacPath" >> $env:GITHUB_PATH
@@ -35,7 +35,7 @@ jobs:
             & $env:POWERPLATFORMTOOLS_PACPATH auth create --name "Actions" -id ${{secrets.CLIENT_ID}} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID}} --url "https://orgfddc44ac.crm.dynamics.com"
           }
           else {
-            $env:GITHUB_PATH auth create --name "Actions" -id ${{secrets.CLIENT_ID}} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID}} --url "https://orgfddc44ac.crm.dynamics.com"          
+            $env:POWERPLATFORMTOOLS_PACPATH auth create --name "Actions" -id ${{secrets.CLIENT_ID}} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID}} --url "https://orgfddc44ac.crm.dynamics.com"          
           }
 
       - name: Who Am I
