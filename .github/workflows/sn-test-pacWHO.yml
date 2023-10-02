@@ -39,7 +39,7 @@ jobs:
       - name: Who Am I
         # working-directory: $env:GITHUB_PATH      
         run: |
-          pwsh -Command cd $pacPath
-          pwsh -Command $pacPath\pac.exe org who
-          # $env:GITHUB_PATH\pac.exe org who
+          & cd $pacPath
+          # $pacPath\pac.exe org who
+          & $env:POWERPLATFORMTOOLS_PACPATH org who
  
