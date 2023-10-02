@@ -4,7 +4,8 @@ on: workflow_dispatch
 
 jobs:
   apply-tenant-settings:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
+    # runs-on: windows-latest
     steps:
       - name: Install PAC CLI
         uses: microsoft/powerplatform-actions/actions-install@v1
@@ -16,7 +17,6 @@ jobs:
         run: |
           $actionsPath = "${{ runner.temp }}".Replace("_temp","_actions")
           if ($env:RUNNER_OS -eq "Windows") {
-            # $array = Get-ChildItem $actionsPath -Recurse | Where-Object{$_.FullName.EndsWith('pac\tools\pac.exe')}
             $array = Get-ChildItem $actionsPath -Recurse | Where-Object{$_.FullName.EndsWith('\tools\pac.exe')}
             $filePath = $env:POWERPLATFORMTOOLS_PACPATH
             $pacPath = Split-Path -Path $filePath -Parent
@@ -25,14 +25,12 @@ jobs:
           else {
             $array = Get-ChildItem $actionsPath -Recurse | Where-Object{$_.FullName.EndsWith('pac_linux/tools/pac')}
           }
-          # $pacPath = $env:POWERPLATFORMTOOLS_PACPATH
           # $pacPath = $array[0].Directory.FullName
           ";$pacPath" >> $env:GITHUB_PATH
 
         # We need to add CLIENT_ID, CLIENT_SECRET, and TENANT_ID in secrets
       - name: Setup Authentication
         run: |
-          # pwsh -File cd $pacPath
           & $env:POWERPLATFORMTOOLS_PACPATH auth create --name "Actions" -id ${{secrets.CLIENT_ID}} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID}} --url "https://orgfddc44ac.crm.dynamics.com"
 
       - name: Who Am I
