@@ -33,13 +33,13 @@ jobs:
       - name: Setup Authentication
         # working-directory: $env:GITHUB_PATH
         run: |
-          pwsh cd $pacPath
-          pwsh $pacPath\pac.exe auth create --name "Actions" -id ${{secrets.CLIENT_ID}} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID}}
+          pwsh -File cd $pacPath
+          pwsh -File $pacPath\pac.exe auth create --name "Actions" -id ${{secrets.CLIENT_ID}} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID}}
 
       - name: Who Am I
         # working-directory: $env:GITHUB_PATH      
         run: |
-          pwsh cd $pacPath
-          pwsh $pacPath\pac.exe org who
+          pwsh -Command cd $pacPath
+          pwsh -Command $pacPath\pac.exe org who
           # $env:GITHUB_PATH\pac.exe org who
  
