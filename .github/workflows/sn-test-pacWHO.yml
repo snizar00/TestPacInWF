@@ -4,8 +4,8 @@ on: workflow_dispatch
 
 jobs:
   check-auth-profile:
-    # runs-on: ubuntu-latest
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
+    # runs-on: windows-latest
     steps:
       - name: Install PAC CLI
         uses: microsoft/powerplatform-actions/actions-install@v1
@@ -33,15 +33,15 @@ jobs:
           cd $pacPath
           #
           # For ubuntu runner, use below line
-          # pac auth create --name "Actions" -id ${{secrets.CLIENT_ID}} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID}} --url "https://orgfddc44ac.crm.dynamics.com"          
+          pac auth create --name "Actions" -id ${{secrets.CLIENT_ID}} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID}} --url "https://orgfddc44ac.crm.dynamics.com"          
           #
           # For windows runner, use below line with "& "
-          & $env:POWERPLATFORMTOOLS_PACPATH auth create --name "Actions" -id ${{secrets.CLIENT_ID}} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID}} --url "https://orgfddc44ac.crm.dynamics.com"
+          # & $env:POWERPLATFORMTOOLS_PACPATH auth create --name "Actions" -id ${{secrets.CLIENT_ID}} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID}} --url "https://orgfddc44ac.crm.dynamics.com"
 
       - name: Who Am I
         run: |
           cd $pacPath
           # For ubuntu runner, use below line
-          # pac org who
+          pac org who
           # For windows runner, use below line with "& "
-          & $env:POWERPLATFORMTOOLS_PACPATH org who          
+          # & $env:POWERPLATFORMTOOLS_PACPATH org who          
