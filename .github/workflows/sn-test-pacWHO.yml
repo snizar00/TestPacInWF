@@ -1,4 +1,4 @@
-name: apply-tenant-settings
+name: check-auth-profile
 
 on: workflow_dispatch
 
@@ -20,28 +20,28 @@ jobs:
             $array = Get-ChildItem $actionsPath -Recurse | Where-Object{$_.FullName.EndsWith('\tools\pac.exe')}
             $filePath = $env:POWERPLATFORMTOOLS_PACPATH
             $pacPath = Split-Path -Path $filePath -Parent
-            Write-Host "Directory Path: $pacPath"
           }
           else {
-            $array = Get-ChildItem $actionsPath -Recurse | Where-Object{$_.FullName.EndsWith('/pac')}
-            Write-Host "Array: $array"            
             $array = Get-ChildItem "/tmp/powerplatform-actions*" -Recurse | Where-Object{$_.FullName.EndsWith('/pac')}
+          }
             $pacPath = $array[0].Directory.FullName
             "$pacPath" >> $env:GITHUB_PATH
-          }
 
         # We need to add CLIENT_ID, CLIENT_SECRET, and TENANT_ID in secrets
       - name: Setup Authentication
         run: |
           cd $pacPath
+          #
+          # For ubuntu runner, use below line
           pac auth create --name "Actions" -id ${{secrets.CLIENT_ID}} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID}} --url "https://orgfddc44ac.crm.dynamics.com"          
-          
+          #
+          # For windows runner, use below line with "& "
+          # & $env:POWERPLATFORMTOOLS_PACPATH auth create --name "Actions" -id ${{secrets.CLIENT_ID}} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID}} --url "https://orgfddc44ac.crm.dynamics.com"
+
       - name: Who Am I
         run: |
           cd $pacPath
+          # For ubuntu runner, use below line
           pac org who
-
-          # $env:POWERPLATFORMTOOLS_PACPATH auth create --name "Actions" -id ${{secrets.CLIENT_ID}} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID}} --url "https://orgfddc44ac.crm.dynamics.com"          
-          # $env:GITHUB_PATH org who
+          # For windows runner, use below line with "& "
           #  & $env:POWERPLATFORMTOOLS_PACPATH org who          
-          # Write-Host "Runner OS $env:RUNNER_OS" 
