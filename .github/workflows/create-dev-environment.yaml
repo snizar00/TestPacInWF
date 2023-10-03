@@ -22,18 +22,23 @@ jobs:
       - name: Install PAC CLI
         uses: microsoft/powerplatform-actions/actions-install@v1
 
-      - name: Setup Authentication    
+      - name: Setup Authentication, Who-Am-I, and Create Dev Env
         run: |
           & $env:POWERPLATFORMTOOLS_PACPATH auth create --name "Actions" -id ${{secrets.CLIENT_ID}} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID}} --url "https://orgfddc44ac.crm.dynamics.com"
-          # pac auth create --name "Actions" --applicationId "$env:CLIENT_ID" --clientSecret "$env:CLIENT_SECRET" --tenant "$env:TENANT_ID"
-
-      - name: Who Am I
-        run: |
           & $env:POWERPLATFORMTOOLS_PACPATH org who
-
-      - name: Create Developer Environment
-        run: |
           & $env:POWERPLATFORMTOOLS_PACPATH admin create `
             --name ${{ github.event.inputs.env_name}} `
             --type "Developer"
+
+          # pac auth create --name "Actions" --applicationId "$env:CLIENT_ID" --clientSecret "$env:CLIENT_SECRET" --tenant "$env:TENANT_ID"
+#
+#      - name: Who Am I
+#        run: |
+#          & $env:POWERPLATFORMTOOLS_PACPATH org who
+#
+#      - name: Create Developer Environment
+#        run: |
+#          & $env:POWERPLATFORMTOOLS_PACPATH admin create `
+#            --name ${{ github.event.inputs.env_name}} `
+#            --type "Developer"
             # --team-id ${{ github.event.inputs.team_id}}
