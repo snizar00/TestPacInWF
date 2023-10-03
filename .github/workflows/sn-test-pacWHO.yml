@@ -26,7 +26,7 @@ jobs:
             $array = Get-ChildItem $actionsPath -Recurse | Where-Object{$_.FullName.EndsWith('/pac')}
             Write-Host "Array: $array"            
           }
-            $array = Get-ChildItem "/tmp" -Recurse | Where-Object{$_.FullName.EndsWith('/pac')}
+            $array = Get-ChildItem "/tmp/powerplatform-actions*" -Recurse | Where-Object{$_.FullName.EndsWith('/pac')}
             Write-Host "Array: $array"            
 
           # $pacPath = $array[0].Directory.FullName
