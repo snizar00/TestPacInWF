@@ -26,25 +26,29 @@ jobs:
       - name: Install PAC CLI
         uses: microsoft/powerplatform-actions/actions-install@v1
 
-      - name: Setup Authentication, Who-Am-I, and Create Dev Env
+      - if: ${{ always() }}
+        id: get-pac-path
+        name: Add PAC to path
+        shell: pwsh
         run: |
-          if ($env:RUNNER_OS -neq "Windows") {
+          $actionsPath = "${{ runner.temp }}".Replace("_temp","_actions")
+          if ($env:RUNNER_OS == 'Linux') {
             $array = Get-ChildItem "/tmp/powerplatform-actions*" -Recurse | Where-Object{$_.FullName.EndsWith('/pac')}
             $pacPath = $array[0].Directory.FullName
           }
           "$pacPath" >> $env:GITHUB_PATH
-          # For ubuntu runner, replace "& $env:POWERPLATFORMTOOLS_PACPATH" with "pac"
           
+      - name: Setup Authentication, Who-Am-I, and Create Dev Env
+        run: |
+          # For ubuntu runner, replace "& $env:POWERPLATFORMTOOLS_PACPATH" with "pac"
           #
           # Universal profiles do not currently work well with SPNs. Global Discovery Service is not callable by SPNs, so it cannot retrieve a URL to talk to any dataverse environments.
           # & $env:POWERPLATFORMTOOLS_PACPATH auth create --name "Actions" -id ${{secrets.CLIENT_ID }} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID }}
-
           #
           # Must use username/password to create an environment.
-          # For ubuntu-runner, replace "& $env:POWERPLATFORMTOOLS_PACPATH" with "pac"
+
           pac auth create --name "Actions" --username ${{ github.event.inputs.user_name }} --password "${{ github.event.inputs.user_pd }}"
           pac org who
           pac admin create `
             --name ${{ github.event.inputs.env_name}} `
             --type "Developer"
-
