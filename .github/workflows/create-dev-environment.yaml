@@ -35,12 +35,12 @@ jobs:
           if ($env:RUNNER_OS -eq 'Linux') {
             $array = Get-ChildItem "/tmp/powerplatform-actions*" -Recurse | Where-Object{$_.FullName.EndsWith('/pac')}
             $pacPath = $array[0].Directory.FullName
+            "$pacPath" >> $env:GITHUB_PATH
           }
-          "$pacPath" >> $env:GITHUB_PATH
           
       - name: Setup Authentication, Who-Am-I, and Create Dev Env
         run: |
-          # For ubuntu runner, replace "& $env:POWERPLATFORMTOOLS_PACPATH" with "pac"
+          # For Windows runner, replace "pac" with "& $env:POWERPLATFORMTOOLS_PACPATH"
           #
           # Universal profiles do not currently work well with SPNs. Global Discovery Service is not callable by SPNs, so it cannot retrieve a URL to talk to any dataverse environments.
           # & $env:POWERPLATFORMTOOLS_PACPATH auth create --name "Actions" -id ${{secrets.CLIENT_ID }} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID }}
