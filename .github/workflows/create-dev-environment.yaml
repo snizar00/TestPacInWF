@@ -6,6 +6,12 @@ on:
       env_name:
         description: name for the environment to be created
         required: true
+      user_name:
+         description: User name
+         required: true
+      user_pd:
+         description: User password
+         required: true
       # team_id:
        #  description: security group id
         # required: true
@@ -14,8 +20,8 @@ env:
   CLIENT_ID: ${{secrets.CLIENT_ID}}
   CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
   TENANT_ID: ${{secrets.TENANT_ID}}
-  CLIENT_USR: ${{secrets.CLIENT_USR}}
-  CLIENT_PD: ${{secrets.CLIENT_PD}}
+  # CLIENT_USR: ${{secrets.CLIENT_USR}}
+  # CLIENT_PD: ${{secrets.CLIENT_PD}}
   
 jobs:
   create-dev-environment:
@@ -27,7 +33,7 @@ jobs:
       - name: Setup Authentication, Who-Am-I, and Create Dev Env
         run: |
           # & $env:POWERPLATFORMTOOLS_PACPATH auth create --name "Actions" -id ${{secrets.CLIENT_ID}} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID}} --url "https://orgfddc44ac.crm.dynamics.com"
-          & $env:POWERPLATFORMTOOLS_PACPATH auth create --name "Actions" -un ${{secrets.CLIENT_USR}} -p ${{ secrets.CLIENT_PD }}
+          & $env:POWERPLATFORMTOOLS_PACPATH auth create --name "Actions" -un ${{ env.user_name }} -p ${{ env.user_pd }}
           & $env:POWERPLATFORMTOOLS_PACPATH org who
           & $env:POWERPLATFORMTOOLS_PACPATH admin create `
             --name ${{ github.event.inputs.env_name}} `
