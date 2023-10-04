@@ -1,7 +1,14 @@
 name: check-tenant-settings
 
-on: workflow_dispatch
-
+on: 
+  workflow_dispatch:
+    inputs:
+      user_name:
+         description: User name
+         required: true
+      user_pd:
+         description: User password
+         required: true
 jobs:
   check-tenant-settings:
     runs-on: windows-latest
@@ -32,7 +39,8 @@ jobs:
           # For windows runner, use below line with "& $env:POWERPLATFORMTOOLS_PACPATH" that has pac.exe in the path
           # For ubuntu runner, just use pac - replace "& $env:POWERPLATFORMTOOLS_PACPATH" with "pac"
           #
-          & $env:POWERPLATFORMTOOLS_PACPATH auth create --name "Actions" -id ${{secrets.CLIENT_ID}} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID}} --url "https://orgfddc44ac.crm.dynamics.com"
+          # & $env:POWERPLATFORMTOOLS_PACPATH auth create --name "Actions" -id ${{secrets.CLIENT_ID}} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID}} --url "https://orgfddc44ac.crm.dynamics.com"
+          & $env:POWERPLATFORMTOOLS_PACPATH auth create --name "Actions" -un ${{ github.event.inputs.user_name }} -p "${{ github.event.inputs.user_pd }}"
 
       - name: Who Am I
         run: |
