@@ -49,6 +49,5 @@ jobs:
 
           pac auth create --name "Actions" --username ${{ github.event.inputs.user_name }} --password "${{ github.event.inputs.user_pd }}"
           pac org who
-          pac admin create `
-            --name ${{ github.event.inputs.env_name}} `
-            --type "Developer"
+          pac admin create --name ${{ github.event.inputs.env_name}} --type "Developer"
+            
