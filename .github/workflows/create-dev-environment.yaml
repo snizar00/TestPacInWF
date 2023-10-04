@@ -32,7 +32,7 @@ jobs:
         shell: pwsh
         run: |
           $actionsPath = "${{ runner.temp }}".Replace("_temp","_actions")
-          if ($env:RUNNER_OS == 'Linux') {
+          if ($env:RUNNER_OS -eq 'Linux') {
             $array = Get-ChildItem "/tmp/powerplatform-actions*" -Recurse | Where-Object{$_.FullName.EndsWith('/pac')}
             $pacPath = $array[0].Directory.FullName
           }
