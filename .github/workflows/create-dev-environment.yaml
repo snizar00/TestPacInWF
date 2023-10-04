@@ -28,7 +28,7 @@ jobs:
 
       - name: Setup Authentication, Who-Am-I, and Create Dev Env
         run: |
-          if ($env:RUNNER_OS -eq "Ubuntu") {
+          if ($env:RUNNER_OS -eq "Linux") {
             $array = Get-ChildItem "/tmp/powerplatform-actions*" -Recurse | Where-Object{$_.FullName.EndsWith('/pac')}
             $pacPath = $array[0].Directory.FullName
           }
