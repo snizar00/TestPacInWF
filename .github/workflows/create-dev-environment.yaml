@@ -33,7 +33,7 @@ jobs:
       - name: Setup Authentication, Who-Am-I, and Create Dev Env
         run: |
           # & $env:POWERPLATFORMTOOLS_PACPATH auth create --name "Actions" -id ${{secrets.CLIENT_ID}} -cs ${{ secrets.CLIENT_SECRET }} -t ${{secrets.TENANT_ID}} --url "https://orgfddc44ac.crm.dynamics.com"
-          & $env:POWERPLATFORMTOOLS_PACPATH auth create --name "Actions" -un ${{ env.user_name }} -p ${{ env.user_pd }}
+          & $env:POWERPLATFORMTOOLS_PACPATH auth create --name "Actions" -un ${{ env:user_name }} -p ${{ env:user_pd }}
           & $env:POWERPLATFORMTOOLS_PACPATH org who
           & $env:POWERPLATFORMTOOLS_PACPATH admin create `
             --name ${{ github.event.inputs.env_name}} `
